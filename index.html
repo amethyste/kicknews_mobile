@@ -1,27 +1,90 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
     <html>
         <head>
             <meta charset="utf-8">
             <title>Kicknews - Catégorie</title>
             <!-- Bootstrap -->
             <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+            
+            <script src="js/jquery-latest.js"></script>
+            <script type="text/javascript">
+				function connect() {
+					// check connexion
+				}
+			
+				$(document).ready(function() {
+					connect(); 
+					var categories = ['category'];
+					$(categories).each(function() {
+						reloadArticles(this);
+					});
+				});
+			
+				function reloadArticles(category) {
+					$.ajax('articles.json', {
+						dataType: 'json', // data will be parsed in json automagically
+						type: "GET",
+						success: function(articles) {
+							// update list for given category
+							$(articles).each(function() {
+								// Add new article
+								var html = printArticleShort(this);
+								$('#category').prepend(html);
+								// Remove oldest article
+								//removeOldArticle(category);
+							});
+						},
+					});
+				}
+			
+				function storeArticle() {
+					// Saving for the future, connexion-less app
+				}
+			
+				function printArticleShort(article) {
+					var html = '<a href="#'+ article.id +'" class="article"><div>';
+					if(article.picture) { html += '<img src="'+ article.picture +'" />'; }
+					html += '<h3>' + article.title + '</h3>';
+					html += '<p>' + article.subhead + '</p>';
+					html += '</div></a>';
+					return html;
+			
+				}
+			
+				function removeOldArticle(category) {
+					$('#'+category+':last-child').remove();
+				}
+            </script>
+            
         </head>
         <body>
-            <h1>Hello, world!</h1>
-            <script src="js/jquery-latest.js"></script>
-            <script src="js/bootstrap.min.js"></script>
+        	<div class="container-narrow">
+		      <div class="navbar navbar-inverse">
+		        <div class="navbar-inner">
+		          <div class="container">
+		            <a class="brand" href="#">Kicknews</a>
+		          </div>
+		        </div>
+		      </div>
 
+	            <div id="category">
+	            </div>
 
-            <ul class="unstyled">
-                <li class="clear">
-                    <a href="article.html" class="left"><img src="img/affaire_mahe.jpg" alt=""/></a>
-                    <h2>Affaire Mahé : la défense plaide l'humanité des soldats</h2>
-                </li>
-                <li class="clear">
-                    <a href="article.html" class="left"><img src="img/affaire_mahe.jpg" alt=""/></a>
-                    <h2>Affaire Mahé : la défense plaide l'humanité des soldats</h2>
-                </li>
-            </ul>
+				<div class="container-narrow">
+		            <ul class="unstyled">
+		                <li class="clear">
+		                    <a href="article.html" class="left"><img src="img/affaire_mahe.jpg" alt=""/></a>
+		                    <h2>Affaire Mahé : la défense plaide l'humanité des soldats</h2>
+		                </li>
+		                <li class="clear">
+		                    <a href="article.html" class="left"><img src="img/affaire_mahe.jpg" alt=""/></a>
+		                    <h2>Affaire Mahé : la défense plaide l'humanité des soldats</h2>
+		                </li>
+		            </ul>
+	            </div>
+            </div>
+            
+            <script src="js/bootstrap.min.js"></script> 
 
         </body>
     </html>
